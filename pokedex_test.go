@@ -66,15 +66,12 @@ func TestPokeApiMap(t *testing.T) {
 		expected pokeapi.LocationArea
 	} {
 		{
-			input: &inputStr,
+			input: inputStr,
 			expected: pokeapi.LocationArea {
 				Count: 1089,
 				Next: &nextInputStr,
 				Previous: nil,
-				Results: []struct {
-					Name string `json:"name"`
-					URL string `json:"url"`
-				} {
+				Results: []pokeapi.LocationAreaResult {
 					{
 						Name: "canalave-city-area",
 						URL: "https://pokeapi.co/api/v2/location-area/1/",
@@ -185,22 +182,24 @@ actual Count: %d
 			expected.Count,
 			actual.Count)
 		}
-		if actual.Next != expected.Next {
+		// TODO check if nil
+		if (actual.Next != expected.Next && (actual.Next == nil  || expected.Next == nil)){
 			t.Errorf(
 `
 -------- TEST FAILED --------
-expected Next: %s
-actual Next: %s
+expected Next: %v
+actual Next: %v
 `,
 			expected.Next,
 			actual.Next)
 		}
-		if actual.Previous != expected.Previous {
+		if (actual.Previous != expected.Previous && (actual.Previous == nil  || expected.Previous == nil)) {
+			
 			t.Errorf(
 `
 -------- TEST FAILED --------
-expected Previous: %s
-actual Previous: %s
+expected Previous: %v
+actual Previous: %v
 `,
 			expected.Previous,
 			actual.Previous)

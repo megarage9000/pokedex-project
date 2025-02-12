@@ -22,11 +22,15 @@ func commandMap(config *Configuration) error {
 	config.next = locationAreaResults.Next
 	config.previous = locationAreaResults.Previous
 
-	for _, locationArea := range locationAreaResults.Results {
-		fmt.Printf("%s\n", locationArea.Name)
-	}
+	listLocationAreas(locationAreaResults.Results)
 
 	return nil
+}
+
+func listLocationAreas(locationAreaResults []pokeapi.LocationAreaResult) {
+	for _, locationArea := range locationAreaResults{
+		fmt.Printf("%s\n", locationArea.Name)
+	}
 }
 
 
@@ -37,5 +41,16 @@ func commandMapb(config *Configuration) error {
 	if config.previous == nil{
 		return nil
 	}
+
+	locationAreaResults, err := pokeapi.GetMap(*config.previous)
+	if err != nil {
+		return err
+	}
+
+	config.next = locationAreaResults.Next
+	config.previous = locationAreaResults.Previous
+
+	listLocationAreas(locationAreaResults.Results)
+
 	return nil
 }
