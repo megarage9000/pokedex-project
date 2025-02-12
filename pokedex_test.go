@@ -161,7 +161,7 @@ func TestPokeApiMap(t *testing.T) {
 
 	for _, testCase := range cases {
 
-		actual, err := pokeapi.GetMap(testCase.input)
+		actual, err := pokeapi.ListLocations(testCase.input)
 		expected := testCase.expected
 
 		if err != nil {

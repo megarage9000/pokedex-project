@@ -14,7 +14,27 @@ func commandMap(config *Configuration) error {
 		config.next = &defaultNext
 	}
 
-	locationAreaResults, err := pokeapi.GetMap(*config.next)
+	locationAreaResults, err := pokeapi.ListLocations(*config.next)
+	if err != nil {
+		return err
+	}
+
+	config.next = locationAreaResults.Next
+	config.previous = locationAreaResults.Previous
+
+	listLocationAreas(locationAreaResults.Results)
+
+	return nil
+}
+
+func commandMapb(config *Configuration) error {
+
+	// check if the previous url is set
+	if config.previous == nil{
+		return nil
+	}
+
+	locationAreaResults, err := pokeapi.ListLocations(*config.previous)
 	if err != nil {
 		return err
 	}
@@ -31,24 +51,4 @@ func listLocationAreas(locationAreaResults []pokeapi.LocationAreaResult) {
 	for _, locationArea := range locationAreaResults{
 		fmt.Printf("%s\n", locationArea.Name)
 	}
-}
-
-func commandMapb(config *Configuration) error {
-
-	// check if the previous url is set
-	if config.previous == nil{
-		return nil
-	}
-
-	locationAreaResults, err := pokeapi.GetMap(*config.previous)
-	if err != nil {
-		return err
-	}
-
-	config.next = locationAreaResults.Next
-	config.previous = locationAreaResults.Previous
-
-	listLocationAreas(locationAreaResults.Results)
-
-	return nil
 }
