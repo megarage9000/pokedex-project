@@ -57,15 +57,19 @@ func TestCleanInput(t *testing.T) {
 }
 
 func TestPokeApiMap(t *testing.T) {
+
+	inputStr := "https://pokeapi.co/api/v2/location-area"
+	nextInputStr := "https://pokeapi.co/api/v2/location-area?offset=20&limit=20"
+
 	cases := []struct {
 		input string
 		expected pokeapi.LocationArea
 	} {
 		{
-			input: "https://pokeapi.co/api/v2/location-area",
+			input: &inputStr,
 			expected: pokeapi.LocationArea {
 				Count: 1089,
-				Next: "https://pokeapi.co/api/v2/location-area?offset=20&limit=20",
+				Next: &nextInputStr,
 				Previous: nil,
 				Results: []struct {
 					Name string `json:"name"`

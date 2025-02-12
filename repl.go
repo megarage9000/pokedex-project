@@ -11,12 +11,19 @@ import (
 type cliCommand struct {
 	name string
 	description string
-	callback func() error
+	callback func(*Configuration) error
+}
+
+type Configuration struct {
+	next *string
+	previous *string
 }
 
 
 func startRepl() {
 	
+	configuration := Configuration{}
+
 	// Creating input scanner to read from user input
 	scanner := bufio.NewScanner(os.Stdin)
 	commands := getCommands()
@@ -30,7 +37,7 @@ func startRepl() {
 			
 			// Checking user input
 			if res, ok := commands[command]; ok {
-				res.callback()
+				res.callback(&configuration)
 			} else {
 				fmt.Println("Unknown command")
 			}
@@ -50,6 +57,11 @@ func getCommands() map[string]cliCommand {
 			name: "help",
 			description: "Displays a help message",
 			callback: commandHelp,
+		},
+		"map": cliCommand {
+			name: "map",
+			description: "Lists all the available locations",
+			callback: commandMap,
 		},
 	}
 }

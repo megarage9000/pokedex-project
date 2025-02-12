@@ -3,7 +3,7 @@ package main
 
 import "fmt"
 
-func commandHelp() error {
+func commandHelp(config *Configuration) error {
 	commands := getCommands()
 	fmt.Print(
 `
