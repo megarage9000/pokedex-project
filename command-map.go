@@ -7,7 +7,7 @@ import (
 
 func commandMap(config *Configuration) error {
 	
-	defaultNext := "https://pokeapi.co/api/v2/location/"
+	defaultNext := "https://pokeapi.co/api/v2/location-area"
 
 	// check if the next url is set
 	if config.next == nil {
@@ -32,8 +32,6 @@ func listLocationAreas(locationAreaResults []pokeapi.LocationAreaResult) {
 		fmt.Printf("%s\n", locationArea.Name)
 	}
 }
-
-
 
 func commandMapb(config *Configuration) error {
 
