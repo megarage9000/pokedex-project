@@ -5,7 +5,8 @@ import "fmt"
 
 func commandHelp() error {
 	commands := getCommands()
-	fmt.Println(`
+	fmt.Print(
+`
 Welcome to the Pokedex!
 Usage:
 `)

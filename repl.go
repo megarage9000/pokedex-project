@@ -17,15 +17,18 @@ type cliCommand struct {
 
 func startRepl() {
 	
+	// Creating input scanner to read from user input
 	scanner := bufio.NewScanner(os.Stdin)
 	commands := getCommands()
 
+	// Inf. for loop to poll user input
 	for ;; {
 		fmt.Print("Pokedex > ")
 		if scanner.Scan() {
 			results := cleanInput(scanner.Text())
 			command := results[0]
-
+			
+			// Checking user input
 			if res, ok := commands[command]; ok {
 				res.callback()
 			} else {
