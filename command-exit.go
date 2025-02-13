@@ -8,7 +8,7 @@ import (
 
 func commandExit(config *Configuration) error {
 	fmt.Println("Closing the Pokedex... Goodbye!")
-	config.cache.Done <- true
+	config.client.StopCacheReap()
 	defer os.Exit(0)
 	return nil
 }

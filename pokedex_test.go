@@ -3,6 +3,7 @@ package main
 import (
 	"testing"
 	"internal/pokeapi"
+	"time"
 )
 
 // - All tests must be prefixed with "Test"
@@ -156,12 +157,11 @@ func TestPokeApiMap(t *testing.T) {
 			},
 		},
 	}
-
+	client := pokeapi.NewClient(5 * time.Second, 1 * time.Minute)
 	// Run test cases
-
 	for _, testCase := range cases {
 
-		actual, err := pokeapi.ListLocations(testCase.input)
+		actual, err := client.ListLocations(testCase.input)
 		expected := testCase.expected
 
 		if err != nil {
@@ -241,4 +241,6 @@ actual URL: %s
 			}
 		}
 	}
+
+	client.StopCacheReap()
 }

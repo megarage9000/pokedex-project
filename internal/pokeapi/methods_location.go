@@ -6,14 +6,24 @@ import (
 )
 
 // Functions must be capitalized
-func ListLocations(url string) (LocationArea, error) {
+func (c * Client) ListLocations(locationUrl string) (LocationArea, error) {
 
 	getUrl := baseUrl + "/location-area"
-	if url != "" {
-		getUrl = url
+	if locationUrl != "" {
+		getUrl = locationUrl
 	}
 
 	var result LocationArea
+	
+	// Get Cache
+	if cacheResult, ok := c.cache.Get(getUrl); ok {
+		if err := json.Unmarshal(cacheResult, &result); err != nil {
+			return result, err
+		}
+		return result, nil
+	} 
+	
+	// Perform http get on location area
 	request, err := http.NewRequest("GET", getUrl, nil)
 	if err != nil {
 		return result, err
@@ -31,6 +41,11 @@ func ListLocations(url string) (LocationArea, error) {
 
 	if err := decoder.Decode(&result); err != nil {
 		return result, err
+	}
+
+	// Cache data
+	if cachedData, err := json.Marshal(response); err == nil {
+		c.cache.Add(getUrl, cachedData)
 	}
 
 	return result, err
