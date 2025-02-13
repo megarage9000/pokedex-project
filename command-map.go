@@ -5,7 +5,7 @@ import (
 	"fmt"
 )
 
-func commandMap(config *Configuration) error {
+func commandMap(config *Configuration, params []string) error {
 
 	var command string
 
@@ -27,7 +27,7 @@ func commandMap(config *Configuration) error {
 	return nil
 }
 
-func commandMapb(config *Configuration) error {
+func commandMapb(config *Configuration, params []string) error {
 
 	// check if the previous url is set
 	if config.previous == nil{

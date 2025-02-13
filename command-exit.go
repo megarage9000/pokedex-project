@@ -6,7 +6,7 @@ import (
 	"os"
 )
 
-func commandExit(config *Configuration) error {
+func commandExit(config *Configuration, params []string) error {
 	fmt.Println("Closing the Pokedex... Goodbye!")
 	config.client.StopCacheReap()
 	defer os.Exit(0)

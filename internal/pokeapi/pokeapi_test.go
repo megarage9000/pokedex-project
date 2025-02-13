@@ -282,5 +282,95 @@ actual pokemon encounter on LocationPokemonList: %s
 			}
 		}
 	}
+}
 
+func TestPokeApiPokemon(t *testing.T) {
+	cases := []struct {
+		input string
+		expected struct {
+			name string
+			weight int
+			height int
+			stats map[string]int
+		}
+	} {
+		{
+			input: "charmander",
+			expected: struct {
+				name string
+				weight int
+				height int
+				stats map[string]int
+			} {
+				name: "charmander",
+				weight: 85,
+				height: 6,
+				stats: map[string]int {
+					"hp": 39,
+					"attack": 52,
+					"defense": 43,
+					"special-attack": 60,
+					"special-defense": 50,
+					"speed": 65,
+				},
+			},
+		},
+	}
+
+	client := createDefaultClient()
+
+	for _, testCase := range cases {
+
+		actual, err := client.GetPokemonInformation(testCase.input)
+		expectedResults := testCase.expected
+
+		if err != nil {
+			t.Errorf(
+`
+-------- TEST FAILED --------
+error when calling ExploreLocation(): %s
+`, 			err)
+		}
+
+		if actual.Name != expectedResults.name {
+			t.Errorf(
+`
+-------- TEST FAILED --------
+expected name on Pokemon: %s
+actual name on Pokemon: %s
+`, 			expectedResults.name, actual.Name)			
+		}
+
+		if actual.Weight != expectedResults.weight {
+			t.Errorf(
+`
+-------- TEST FAILED --------
+expected weight on Pokemon: %d
+actual weight on Pokemon: %d
+`, 			expectedResults.weight, actual.Weight)					
+		}
+
+		if actual.Height != expectedResults.height {
+			t.Errorf(
+`
+-------- TEST FAILED --------
+expected height on Pokemon: %d
+actual height on Pokemon: %d
+`, 			expectedResults.height, actual.Height)					
+		}
+
+		for _, stat := range actual.Stats {
+			statName := stat.Stat.Name
+			statValue := stat.BaseStat
+
+			if expectedResults.stats[statName] != statValue {
+				t.Errorf(
+`
+-------- TEST FAILED --------
+expected stat %s value on Pokemon: %d
+actual stat %s value on Pokemon: %d
+`, 				statName, expectedResults.stats[statName], statName, statValue)	
+			}
+		}
+	}
 }
