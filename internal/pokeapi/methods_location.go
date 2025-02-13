@@ -29,7 +29,7 @@ func (c * Client) ListLocations(locationUrl string) (LocationArea, error) {
 		return result, err
 	}
 
-	response, err := c.client.Do(request)
+	response, err := c.httpClient.Do(request)
 	if err != nil {
 		return result, err
 	}

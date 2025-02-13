@@ -2,8 +2,9 @@ package pokeapi
 
 import (
 	"net/http"
-	"json"
+	"encoding/json"
 	"io"
+	"fmt"
 )
 
 func (c *Client) ExploreLocation(location string) (LocationPokemonList, error) {
@@ -15,28 +16,30 @@ func (c *Client) ExploreLocation(location string) (LocationPokemonList, error) {
 	// Get from cache
 	if cacheResult, ok := c.cache.Get(getUrl); ok {
 		if err := json.Unmarshal(cacheResult, &result); err != nil {
-			return result, nil
+			return result, fmt.Errorf("error in getting from cache: %s", err)
 		}
 		return result, nil
 	}
 
 	request, err := http.NewRequest("GET", getUrl, nil)
 	if err != nil {
-		return result, err
+		return result, fmt.Errorf("error in getting from making GET request to %s: %s", getUrl, err)
 	}
 
-	response, err := c.client.Do(request)
+	response, err := c.httpClient.Do(request)
 	if err != nil {
-		return result, err
+		return result, fmt.Errorf("error in performing GET request to %s: %s", getUrl, err)
 	}
+
+	defer response.Body.Close()
 
 	data, err := io.ReadAll(response.Body)
 	if err != nil {
-		return result, err
+		return result, fmt.Errorf("error in reading GET response from %s: %s", getUrl, err)
 	}
 
 	if err := json.Unmarshal(data, &result); err != nil {
-		return result, err
+		return result, fmt.Errorf("error in decoding data from response %s: %s", getUrl, err)
 	}
 
 	// Save to cache
