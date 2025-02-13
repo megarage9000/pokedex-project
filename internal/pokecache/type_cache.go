@@ -7,8 +7,10 @@ import (
 
 // Cache struct
 type Cache struct {
-	Entries map[string]CacheEntry
-	Mut *sync.RWMutex
+	entries map[string]CacheEntry
+	mut *sync.RWMutex
+	Done chan bool
+	interval time.Duration
 }
 
 // Cache entries

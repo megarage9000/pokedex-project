@@ -6,6 +6,8 @@ import (
 	"strings"
 	"bufio"
 	"os"
+	"internal/pokecache"
+	"time"
 )
 
 type cliCommand struct {
@@ -17,12 +19,14 @@ type cliCommand struct {
 type Configuration struct {
 	next *string
 	previous *string
+	cache pokecache.Cache
 }
 
 
 func startRepl() {
 	
 	configuration := Configuration{}
+	configuration.cache = pokecache.NewCache(5 * time.Second)
 
 	// Creating input scanner to read from user input
 	scanner := bufio.NewScanner(os.Stdin)
