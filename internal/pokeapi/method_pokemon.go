@@ -6,6 +6,7 @@ import (
 	"fmt"
 	"errors"
 	"io"
+	"rand"
 )
 
 func (c *Client) GetPokemonInformation(pokemonName string) (Pokemon, error) {
@@ -52,4 +53,10 @@ func (c *Client) GetPokemonInformation(pokemonName string) (Pokemon, error) {
 	c.cache.Add(getUrl, data)
 
 	return pokemon, nil
+}
+
+func CatchPokemon(pokemon Pokemon) bool {
+	baseExperience := pokemon.BaseExperience
+	n := rand.Intn(baseExperience * 255)
+	return n <= nThresh
 }
