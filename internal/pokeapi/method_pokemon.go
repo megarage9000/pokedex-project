@@ -62,3 +62,19 @@ func CatchPokemon(pokemon Pokemon) bool {
 	n := rand.Intn(baseExperience)
 	return n <= int(baseExperience / 2)
 }
+
+// Printing to console pokemon stats
+// - TODO: convert to a string to use in any output stream
+func (p *Pokemon) InspectPokemon() {
+	fmt.Printf("Name: %s\nHeight: %d\nWeight: %d\nStats:\n", p.Name, p.Height, p.Weight)
+	
+	for _, stat := range p.Stats {
+		fmt.Printf(" -%s: %d\n", stat.Stat.Name, stat.BaseStat)
+	}
+
+	fmt.Println("Types:")
+
+	for _, pokeType := range p.Types {
+		fmt.Printf(" -%s\n", pokeType.Type.Name)
+	}
+}
