@@ -6,7 +6,7 @@ import (
 	"fmt"
 	"errors"
 	"io"
-	"rand"
+	"math/rand"
 )
 
 func (c *Client) GetPokemonInformation(pokemonName string) (Pokemon, error) {
@@ -55,8 +55,10 @@ func (c *Client) GetPokemonInformation(pokemonName string) (Pokemon, error) {
 	return pokemon, nil
 }
 
+
+// For now all pokemon have 50% catch rate
 func CatchPokemon(pokemon Pokemon) bool {
 	baseExperience := pokemon.BaseExperience
-	n := rand.Intn(baseExperience * 255)
-	return n <= nThresh
+	n := rand.Intn(baseExperience)
+	return n <= int(baseExperience / 2)
 }
